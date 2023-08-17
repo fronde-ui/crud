@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cruddemo.mapper.CurdBaseDao">
+<!--为了映射select查询出来结果的集合，其主要作用是将实体类中的字段与数据库表中的字段进行关联映射-->
+    <resultMap id="result_SupBase_Map" type="com.example.cruddemo.entity.SupBaseEntity">
+        <result column="apply_id" property="apply_id" />
+        <result column="apply_code" property="apply_code" />
+        <result column="sup_name" property="sup_name" />
+        <result column="sup_person" property="sup_person" />
+        <result column="apply_pro" property="apply_pro" />
+        <result column="suppiler_id" property="suppiler_id" />
+        <result column="creator" property="creator" />
+        <result column="updater" property="updater" />
+        <result column="gus_money" property="gus_money" />
+        <result column="gus_suppiler_name" property="gus_suppiler_name" />
+        <result column="suppiler_code" property="suppiler_code" />
+    </resultMap>
+    <resultMap id="result_proInfo_mapper" type="com.example.cruddemo.entity.ProInfoEntity">
+        <result column="pro_id" property="pro_id" />
+        <result column="pro_type" property="pro_type" />
+        <result column="pro_name" property="pro_name" />
+        <result column="apply_id" property="apply_id" />
+        <result column="creator" property="creator" />
+        <result column="updater" property="updater" />
+        <result column="sup_name" property="sup_name" />
+        <result column="suppiler_code" property="suppiler_code" />
+    </resultMap>
+
+    <sql id="apply_id">
+        a.apply_id as apply_id
+        ,a.apply_code as apply_code
+			, a.sup_name as sup_name
+			, a.sup_person as sup_person
+			, a.apply_pro as apply_pro
+			, a.suppiler_id as suppiler_id
+			, a.creator as creator
+			, a.updater as updater
+			, a.gus_money as gus_money
+			, a.gus_suppiler_name as gus_suppiler_name
+			, a.suppiler_code as suppiler_code
+    </sql>
+
+    <sql id="pro_id">
+        a.pro_id as pro_id
+			, a.pro_type as pro_type
+			, a.pro_name as pro_name
+			, a.apply_pro as apply_pro
+			, a.apply_id as apply_id
+			, a.creator as creator
+			, a.updater as updater
+			, a.sup_name as sup_name
+			, a.suppiler_code as suppiler_code
+    </sql>
+<!--    增-->
+<!--新增信息表-->
+<!--    <insert id="insertData" parameterType="com.example.cruddemo.entity.InsertMap" useGeneratedKeys="true" keyProperty="id">-->
+<!--        insert into ${tab_name}-->
+<!--            <foreach collection="data.keys" item="key" open="(" close=")" separator="," >-->
+<!--                ${key}-->
+<!--            </foreach>-->
+<!--            values-->
+<!--            <foreach collection="data.keys"  item="key" open="(" close=")" separator=",">-->
+<!--                #{data.${key}}-->
+<!--            </foreach>-->
+<!--    </insert>-->
+
+    <insert id="insertSupBase" parameterType="com.example.cruddemo.entity.SupBaseEntity">
+        INSERT INTO  sup_base(
+            apply_id,
+            apply_code,
+            sup_name,
+            sup_person,
+            apply_pro,
+            suppiler_id,
+            creator,
+            updater,
+            gus_money,
+            gus_suppiler_name,
+            suppiler_code
+        ) VALUES(
+                 #{apply_id,jdbcType=INTEGER}
+                 ,#{apply_code,jdbcType=VARCHAR}
+                ,#{sup_name,jdbcType=VARCHAR}
+                ,#{sup_person,jdbcType=VARCHAR}
+                ,#{apply_pro,jdbcType=VARCHAR}
+                ,#{suppiler_id,jdbcType=VARCHAR}
+                ,#{creator,jdbcType=VARCHAR}
+                ,#{updater,jdbcType=VARCHAR}
+                ,#{gus_money,jdbcType=VARCHAR}
+                ,#{gus_suppiler_name,jdbcType=VARCHAR}
+                ,#{suppiler_code,jdbcType=VARCHAR}
+                )
+    </insert>
+<!--新增产品信息表-->
+    <insert id="insertProInfo" parameterType="com.example.cruddemo.entity.ProInfoEntity">
+        INSERT INTO  pro_info(
+            pro_id
+            ,pro_type
+            ,pro_name
+            , apply_id
+            , creator
+            , updater
+             , sup_name
+             ,  suppiler_code
+        ) VALUES(
+                    #{pro_id,jdbcType=INTEGER}
+                ,#{pro_type,jdbcType=VARCHAR}
+                ,#{pro_name,jdbcType=VARCHAR}
+                ,#{apply_id,jdbcType=VARCHAR}
+                ,#{creator,jdbcType=VARCHAR}
+                ,#{updater,jdbcType=VARCHAR}
+                ,#{sup_name,jdbcType=VARCHAR}
+                ,#{suppiler_code,jdbcType=VARCHAR}
+                )
+    </insert>
+<!--删-->
+<!--   根据条件删除-->
+<!--    删除申请表-->
+    <delete id="deleteData"  parameterType="java.lang.String" statementType="STATEMENT" >
+            delete from ${tab_name} where ${set_rule};
+    </delete>
+
+<!--更新-->
+    <update id="updateSupBase" parameterType="com.example.cruddemo.entity.SupBaseEntity" >
+        update sup_base set
+                         apply_code=#{apply_code,jdbcType=VARCHAR}
+                         ,sup_name = #{sup_name,jdbcType=VARCHAR}
+                          ,apply_pro = #{apply_pro,jdbcType=VARCHAR}
+                          ,sup_person = #{sup_person,jdbcType=VARCHAR}
+                            ,suppiler_id=#{suppiler_id,jdbcType=VARCHAR}
+                            ,creator=#{creator,jdbcType=VARCHAR}
+                           , updater =#{updater,jdbcType=VARCHAR}
+                            ,gus_money  =#{gus_money,jdbcType=VARCHAR}
+                           , gus_suppiler_name =#{gus_suppiler_name,jdbcType=VARCHAR}
+                           , suppiler_code=#{suppiler_code,jdbcType=VARCHAR}
+        where apply_id=#{apply_id}
+    </update>
+    <update id="updateProInfo" parameterType="com.example.cruddemo.entity.ProInfoEntity" >
+        update pro_info set
+                     pro_type = #{pro_type,jdbcType=VARCHAR}
+                     ,pro_name = #{pro_name,jdbcType=VARCHAR}
+                     ,apply_id = #{apply_id,jdbcType=VARCHAR}
+                     ,creator = #{creator,jdbcType=VARCHAR}
+                     ,updater = #{updater,jdbcType=VARCHAR}
+                     ,sup_name = #{sup_name,jdbcType=VARCHAR}
+                     ,suppiler_code = #{suppiler_code,jdbcType=VARCHAR}
+        where pro_id=#{pro_id}
+    </update>
+<!--查-1.按照条件查询-->
+
+<!--    <select id="GetRule"  parameterType="java.lang.String" statementType="STATEMENT">-->
+<!--        select * from ${tab_name} where ${set_rule};-->
+<!--    </select>-->
+<!--    查产品信息表-->
+    <select id="GetProInfoRule" parameterType="String"  resultMap="result_proInfo_mapper">
+        select * from pro_info where ${set_rule};
+    </select>
+    <select id="GetSupBaseRule" parameterType="String"  resultMap="result_SupBase_Map">
+        select * from sup_base where ${set_rule};
+    </select>
+<!--2.查找全部-->
+<!--    <select id="GetAll"    parameterType="java.lang.String"  statementType="STATEMENT">-->
+<!--        select * from  ${tab_name};-->
+<!--    </select>-->
+
+    <select id="GetSupBaseAll"  resultMap="result_SupBase_Map">
+        select * from  sup_base;
+    </select>
+    <select id="GetProInfoAll"  resultMap="result_proInfo_mapper">
+        select * from  pro_info;
+    </select>
+<!--    <select id="GetAll"   resultType="java.lang.String"  parameterType="java.lang.String" statementType="STATEMENT">-->
+<!--        select * from  ${tab_name};-->
+<!--    </select>-->
+
+
+
+</mapper>
